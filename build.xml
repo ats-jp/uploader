@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="uploader" default="war">
+
+	<property name="WEB-INF" value="webapp/WEB-INF" />
+	<property name="META-INF" value="webapp/META-INF" />
+	<property name="classes" value="${WEB-INF}/classes" />
+	<property name="lib" value="${WEB-INF}/lib" />
+
+	<path id="project.classpath">
+		<pathelement path="${classes}" />
+		<pathelement path="bin" />
+		<pathelement location="dependencies/servlet-api.jar" />
+		<pathelement location="dependencies/jsp-api.jar" />
+		<pathelement location="${lib}/substrate.jar" />
+		<pathelement location="${lib}/webkit.jar" />
+		<pathelement location="${lib}/commons-fileupload.jar" />
+	</path>
+
+	<target name="war" depends="cleanup, compile">
+		<war warfile="uploader.war" webxml="${WEB-INF}/web.xml" basedir="webapp" />
+	</target>
+
+	<target name="cleanup">
+		<delete dir="${classes}" />
+		<delete file="uploader.war" />
+		<delete dir="bin" />
+	</target>
+
+	<target name="compile" depends="cleanup">
+		<mkdir dir="${classes}" />
+		<javac srcdir="src" destdir="${classes}" debug="true" optimize="true" deprecation="true" encoding="UTF-8">
+			<classpath refid="project.classpath" />
+			<include name="**/*.java" />
+		</javac>
+		<copy todir="${classes}">
+			<fileset dir="src" includes="**/*.java" />
+		</copy>
+	</target>
+</project>
